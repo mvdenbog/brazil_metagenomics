@@ -1,0 +1,40 @@
+#!/bin/bash
+#PBS -N deconseq
+#PBS -l nodes=1:ppn=1,mem=10gb
+### #PBS -l vmem=20gb
+
+#PBS -j eo 
+#PBS -t 1-200 ### ${NB_FILE}
+
+cd $PBS_O_WORKDIR
+
+# echo PBS_JOBID is ${PBS_JOBID} >> ${WORKING_DIR}/log
+# echo PBS_ARRAYID is ${PBS_ARRAYID} >> ${WORKING_DIR}/log
+
+BIN_DIR=/data3/projects/cisbi-0136/Tools/DeconSeq/deconseq-standalone-0.4.3
+
+infile=`basename ${INFILE}`;
+inbase=`basename ${INFILE} .fastq`;
+indir=`dirname ${INFILE}`;
+indir=`readlink -f ${indir}`;
+input_name=${infile%.*}
+
+if [[ -e ${indir}/${inbase}_clean.fastq ]]; then
+echo clean.fastq already exists
+exit 0
+fi;
+
+
+WORKING_DIR=${indir}/${infile}-DECONSEQ
+
+cd ${WORKING_DIR}
+
+## echo doing ${WORKING_DIR}/${infile}_c${PBS_ARRAYID}.fq on ${DB_CONT} and ${DB_RETAIN}   >> ${PBS_O_WORKDIR}/deconseq.log ;
+
+
+perl ${BIN_DIR}/deconseq.pl -f ${WORKING_DIR}/${infile}_c${PBS_ARRAYID}.fq -dbs ${DB_CONT} -dbs_retain ${DB_RETAIN} -c ${COVERAGE} -i ${IDENTITY} -group ${GROUP} -out_dir ${WORKING_DIR} -id ${PBS_ARRAYID} > /dev/null ####  >> ${PBS_O_WORKDIR}/deconseq.log ;
+
+## echo done ${WORKING_DIR}/${infile}_c${PBS_ARRAYID}.fq on ${DB_CONT} and ${DB_RETAIN}   >> ${PBS_O_WORKDIR}/deconseq.log ;
+
+cd ${PBS_O_WORKDIR} ;
+

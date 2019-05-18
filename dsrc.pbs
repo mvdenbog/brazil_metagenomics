@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#PBS -N dsrc
+
+echo cd ${PBS_O_WORKDIR}/ >> ${INFILE}.log_dsrc
+
+cd ${PBS_O_WORKDIR}/ 
+
+echo ${BASEDIR}/Tools/Dsrc/dsrc c -t10  ${INFILE} ${INFILE}.dsrc >> ${INFILE}.log_dsrc
+${BASEDIR}/Tools/Dsrc/dsrc c -t10  ${INFILE} ${INFILE}.dsrc >> ${INFILE}.log_dsrc
+

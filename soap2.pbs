@@ -1,0 +1,7 @@
+ref=
+
+aln="soap.aln";
+se="soap.SE";
+nomap="soap_nomap";
+
+${BASEDIR}/Tools/Soap2/soap -p 2 -a ${INFILE} -D ${ref} -o ${aln} -u ${nomap}.fasta -v 5 -M 4

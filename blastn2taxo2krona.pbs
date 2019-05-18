@@ -1,0 +1,26 @@
+#!/bin/bash
+
+## Declaration of variables:
+
+## echo INFILE is ${INFILE}
+INFILE=`readlink -f ${INFILE}`
+## echo INFILE is ${INFILE}
+
+if [[ ! -e ${INFILE}.taxo ]]; then
+
+### 1. associate to each taxid a complete taxonomic information:
+
+/data3/projects/cisbi-0136/DB/Taxonomy/Blast2Taxo /data3/projects/cisbi-0136/DB/Taxonomy/taxonomy.db  ${INFILE} ${INFILE}.taxo ${INFILE}.notaxo
+
+## 2. Extract taxonomic information, and produce output file that is compatible for input to KronaTools:
+
+cut -f 14 ${INFILE}.taxo | tr ";" "\t"  | sort | uniq -c > ${INFILE}.taxo.profile
+
+### 3. Use KronaTools (ktImportText) to convert text input to html file (to use in firefox or chrome):
+
+/data3/projects/cisbi-0136/Tools/KronaTools/KronaTools-2.7/bin/ktImportText -o ${INFILE}.taxo.profile.html ${INFILE}.taxo.profile
+
+
+else
+echo ${INFILE}.taxo already exists
+fi;

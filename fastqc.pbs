@@ -1,0 +1,11 @@
+
+infile=`readlink -f ${INFILE}`
+indir=`dirname ${infile}`
+base=`basename ${INFILE} .fastq`
+
+if [[ ! -e ${indir}/${base}_fastqc.zip ]] ;then
+perl ${BASEDIR}/Tools/FastQC/fastqc ${INFILE}
+else
+echo fastqc already done
+fi;
+

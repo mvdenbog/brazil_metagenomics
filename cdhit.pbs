@@ -1,0 +1,11 @@
+
+### INPUT has extension .fasta
+
+dir=`dirname ${INFILE}`
+base=`basename ${INFILE} .fasta`
+
+if [[ ! -e ${dir}/${base}.cdhit.fasta ]]; then
+/data1/biotools/cdhit/cd-hit-est -c 0.99 -d 0 -T 4 -M 0 -i ${INFILE}  -o ${dir}/${base}.cdhit.fasta
+else
+echo ${dir}/${base}.cdhit.fasta already exists
+fi;

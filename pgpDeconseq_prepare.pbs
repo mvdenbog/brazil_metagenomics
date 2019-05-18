@@ -1,0 +1,37 @@
+#!/bin/bash
+
+cd ${PBS_O_WORKDIR}
+
+BIN_DIR=/data3/projects/cisbi-0136/Tools/DeconSeq/deconseq-standalone-0.4.3 
+CWD=$PWD
+
+infile=`basename ${INFILE}`;
+inbase=`basename ${INFILE} .fastq`;
+indir=`readlink -f ${INFILE}`;
+indir=`dirname ${indir}`;
+input_name=${infile%.*}
+
+if [[ -e ${indir}/${inbase}_clean.fastq ]]; then
+echo clean.fastq already exists
+exit 0
+fi;
+
+WORKING_DIR=${indir}/${infile}-DECONSEQ
+
+if [[ ! -d ${WORKING_DIR} ]]; then
+    echo creating ${WORKING_DIR}/;
+    mkdir ${WORKING_DIR};
+    cd ${WORKING_DIR}/ ;
+else
+    echo ${WORKING_DIR} exists! ;
+    exit 1;
+fi
+
+ln -fs ../${infile}
+
+echo splitting input-file up in ${NB_FILE} files for parallelized decontamination ...
+${BIN_DIR}/../splitFastq.pl ${infile} ${NB_FILE} ;
+
+cd ${PBS_O_WORKDIR}
+
+exit 0

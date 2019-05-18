@@ -1,0 +1,40 @@
+#!/bin/bash
+
+echo cleaning up ...
+echo
+
+cd ${PBS_O_WORKDIR}
+
+CWD=${PBS_O_WORKDIR}
+BIN_DIR=/data3/projects/cisbi-0136/Tools/DeconSeq/deconseq-standalone-0.4.3
+
+infile=`basename ${INFILE}`;
+inbase=`basename ${INFILE} .fastq`;
+indir=`dirname ${INFILE}`;
+indir=`readlink -f ${indir}`;
+input_name=${infile%.*}
+
+WORKING_DIR=${indir}/${infile}-DECONSEQ
+
+if [[ -e ${indir}/${inbase}_clean.fastq ]]; then
+echo clean.fastq already exists
+exit 0
+fi;
+
+cd ${WORKING_DIR}
+
+
+cat ${WORKING_DIR}/*_cont.fq > ${WORKING_DIR}/${input_name}_cont.fastq ;
+cat ${WORKING_DIR}/*_clean.fq > ${WORKING_DIR}/${input_name}_clean.fastq ;
+mv ${WORKING_DIR}/${input_name}_clean.fastq ${WORKING_DIR}/.. ; 
+mv ${WORKING_DIR}/${input_name}_cont.fastq ${WORKING_DIR}/.. ;
+
+echo
+cd $CWD ;
+if [[ -d ${WORKING_DIR} ]]; then
+   rm -f -r ${WORKING_DIR}/ ;
+else
+    echo ${WORKING_DIR} is not there ;
+fi
+
+exit 0

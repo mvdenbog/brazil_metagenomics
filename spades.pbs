@@ -1,0 +1,6 @@
+if [[ ! -d ${INDIR}/spades_out ]]; then
+python /data3/projects/cisbi-0136/Tools/Spades/SPAdes-3.13.0-Linux/bin/spades.py -t 8 -k 21,31,51,71 -s ${INFILE} --only-assembler -o ${INDIR}/spades_out
+else
+echo spades already done
+fi;
+

@@ -1,0 +1,16 @@
+## INFILE has extension _clean.fq_unclassified-out.cdhit.fasta 
+
+base=`basename ${INFILE} .fasta`  ## is not really correct, but drop it for now ...
+dir=`dirname ${INFILE}`
+
+### /data1/biotools/ncbi-blast-2.4.0+/bin/blastn -query ${INFILE} -db /data1/public_data/nt/nt -outfmt "6 qseqid sseqid length pident mismatch gapopen qstart qend sstart send evalue bitscore" -evalue 1e-3 -max_target_seqs 1 -task blastn -out ${dir}/${base}.blastn
+
+## infile=${dir}/${base}_clean.fq_unclassified-out.cdhit.fasta 
+infile=${INFILE}
+outfile=${dir}/${base}.blastn
+
+if [[ ! -e ${dir}/pgp_blastall_prepare.list ]] ; then
+perl /data3/projects/cisbi-0136/Tools/Pblastall/PgpBlastall2/pgp_blastall_prepare -query ${infile} -db /data1/public_data/nt/nt  -evalue 1e-3 -max_target_seqs 1 -task blastn -out ${outfile}
+else
+echo ${dir}/pgp_blastall_prepare.list already exists
+fi;

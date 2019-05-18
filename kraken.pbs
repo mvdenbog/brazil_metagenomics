@@ -1,0 +1,5 @@
+if [[ ! -e  ${INDIR}/${INBASE}_output  ]]; then
+${BASEDIR}/Tools/Kraken2/kraken2/kraken2 --threads 5 -db ${BASEDIR}/DB/Kraken2Full/ --unclassified-out ${INDIR}/${INBASE}_unclassified-out --classified-out  ${INDIR}/${INBASE}_classified-out --output  ${INDIR}/${INBASE}_output --report-zero-counts --report  ${INDIR}/${INBASE}_report ${INDIR}/${INBASE} >> ${INDIR}/${INBASE}.kraken_log
+else
+echo kraken already done
+fi;

@@ -1,0 +1,7 @@
+perl ${BASEDIR}/Tools/DeconSeq/deconseq-standalone-0.4.3/deconseq.pl  -f ${INDIR}/${INBASE}_prinseq_good.fastq  -dbs human -dbs_retain viral -c 95 -i 94 -group 1 -out_dir ${INDIR}
+## rename deconseq result files:
+DECONSEQ_CONT=`ls ${INDIR}/*_cont.fq`
+DECONSEQ_CLEAN=`ls ${INDIR}/*_clean.fq`
+mv -i ${DECONSEQ_CONT} ${INDIR}/${INBASE}_cont.fq
+mv -i ${DECONSEQ_CLEAN} ${INDIR}/${INBASE}_clean.fq
+

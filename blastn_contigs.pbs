@@ -1,0 +1,7 @@
+if [[ ! -e ${INDIR}/spades_out/scaffolds.blastn ]]; then
+
+/data1/biotools/ncbi-blast-2.4.0+/bin/blastn -query ${INDIR}/spades_out/scaffolds.fasta -db /data3/projects/cisbi-0136/DB/Blast/Gbk_vrl/genbank_release_vrl -outfmt "6 qseqid sseqid length pident mismatch gapopen qstart qend sstart send evalue bitscore" -evalue 1e-3 -max_target_seqs 1 -task blastn -out ${INDIR}/spades_out/scaffolds.blastn
+
+else
+echo ${INDIR}/spades_out/scaffolds.blastn already exists
+fi;
